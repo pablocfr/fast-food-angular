@@ -1,0 +1,117 @@
+<div class="max-w-[1200px] mx-auto p-6 bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <!-- Botón de retroceso -->
+      <button class="text-gray-600 hover:text-gray-800">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Icono -->
+      <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+        <div class="w-6 h-6 border-2 border-white rounded transform rotate-45"></div>
+      </div>
+
+      <!-- Título -->
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Despacho</h1>
+        <p class="text-sm text-gray-600">Entrega de pedidos listos</p>
+      </div>
+    </div>
+
+    <!-- Fecha y hora + contador -->
+    <div class="text-right">
+      <app-fecha-hora></app-fecha-hora>
+      <div class="text-sm text-gray-600">2 pedidos listos</div>
+    </div>
+  </div>
+
+  <!-- Contenedor principal de pedidos -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Pedidos Listos para Entregar -->
+    <div class="bg-white rounded-lg shadow-sm">
+      <!-- Header de sección -->
+      <div class="bg-green-50 p-4 rounded-t-lg border-l-4 border-green-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          <h2 class="text-lg font-semibold text-green-700">
+            Pedidos Listos para Entregar ({{ pedidosCompletados().length }})
+          </h2>
+        </div>
+      </div>
+
+      <!-- Lista de pedidos -->
+      <div class="p-4 space-y-4 max-h-96 overflow-y-auto">
+        <div *ngFor="let pedido of pedidosCompletados()" class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+          <!-- Número de ticket -->
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center gap-3">
+              <span class="text-lg font-bold text-blue-600">#{{ pedido.numeroTicket }}</span>
+            </div>
+          </div>
+
+          <!-- Cliente -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium text-gray-800">{{ pedido.cliente.nombre }}</span>
+          </div>
+
+          <!-- Botón Entregar -->
+          <button (click)="entregarPedido(pedido.idPedido)" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Entregar Pedido
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pedidos Entregados Hoy -->
+    <div class="bg-white rounded-lg shadow-sm">
+      <!-- Header de sección -->
+      <div class="bg-blue-50 p-4 rounded-t-lg border-l-4 border-blue-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+          </svg>
+          <h2 class="text-lg font-semibold text-blue-700">
+            Pedidos Entregados Hoy ({{ pedidosEntregados().length }})
+          </h2>
+        </div>
+      </div>
+
+      <!-- Lista de entregados -->
+      <div class="p-4 space-y-4 max-h-96 overflow-y-auto">
+        <div *ngFor="let pedido of pedidosEntregados() trackBy: trackByPedido" class="border rounded-lg p-4 bg-gray-50">
+          <!-- Número de ticket y etiqueta -->
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center gap-3">
+              <span class="text-lg font-bold text-blue-600">#{{ pedido.numeroTicket }}</span>
+              <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full uppercase">
+                ENTREGADO
+              </span>
+            </div>
+          </div>
+
+          <!-- Cliente -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-medium text-gray-600">{{ pedido.cliente.nombre }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

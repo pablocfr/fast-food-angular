@@ -1,0 +1,108 @@
+<div class="min-h-dvh bg-gradient-to-br from-yellow-100 to-red-100 text-gray-900">
+  <!-- Header -->
+  <header class="sticky top-0 z-[9999] bg-white/95 backdrop-blur-md border-b shadow-2xl">
+  <div class="mx-auto w-full max-w-7xl px-3 md:px-6 lg:px-8">
+      <div class="flex h-16 items-center gap-2">
+        <div class="flex items-center gap-3">
+          <button
+            (click)="toggleSidebar()"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border bg-white hover:bg-gradient-to-r hover:from-red-50 hover:to-yellow-50 transition-all duration-200 shadow-lg md:hidden">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
+            </svg>
+          </button>
+          <a routerLink="/" class="text-xl font-extrabold bg-gradient-to-r from-red-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-lg">
+            🍔 FastFood Admin
+          </a>
+        </div>
+
+        <div class="ml-auto relative">
+          <button
+            class="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-gradient-to-r hover:from-red-50 hover:to-yellow-50 transition-all duration-200 shadow-lg"
+            (click)="toggleUserMenu()">
+            <span class="h-8 w-8 rounded-full bg-gradient-to-br from-red-500 to-yellow-400 text-white text-sm font-extrabold flex items-center justify-center shadow-lg drop-shadow-lg">JD</span>
+            <div class="hidden sm:block text-left">
+              <div class="text-sm font-bold text-gray-800">Pablo Flores</div>
+              <div class="text-xs text-gray-500 font-medium">Administrador</div>
+            </div>
+            <svg class="h-4 w-4 text-gray-500" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+
+          @if (userMenuOpen()) {
+            <div class="absolute right-0 mt-2 w-64 rounded-3xl border bg-white shadow-2xl ring-1 ring-black/5">
+              <div class="flex items-center gap-3 px-4 py-3">
+                <span class="h-9 w-9 rounded-full bg-gradient-to-br from-red-500 to-yellow-400 text-white text-sm font-extrabold flex items-center justify-center shadow-lg drop-shadow-lg">JD</span>
+                <div>
+                  <div class="text-sm font-bold text-gray-800">Pablo Flores</div>
+                  <div class="text-xs text-gray-500 font-medium">Administrador</div>
+                </div>
+              </div>
+              <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+
+              @for (item of userMenuItems; track $index) {
+                @if (item.dividerAbove) {
+                  <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                }
+                <button
+                  class="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-gradient-to-r hover:from-gray-50 hover:to-red-25 transition-all duration-200"
+                  [class.text-red-600]="item.danger"
+                  [class.hover:from-red-50]="item.danger"
+                  [class.hover:to-red-100]="item.danger"
+                  (click)="handleMenuItem(item)"
+                  [routerLink]="item.route">
+                  <span class="h-8 w-8 rounded-xl border bg-white flex items-center justify-center shadow-lg">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path [attr.d]="item.icon"/>
+                    </svg>
+                  </span>
+                  {{ item.label }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside
+      class="fixed inset-y-0 left-0 z-40 w-64 bg-white/95 backdrop-blur-md border-r shadow-2xl transition-transform md:static md:translate-x-0"
+      [class.-translate-x-full]="!sidebarOpen()"
+      [class.translate-x-0]="sidebarOpen()">
+      <nav class="flex flex-col gap-1 p-3">
+        @for (item of navItems(); track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="bg-gradient-to-r from-red-500 to-yellow-400 text-white shadow-2xl transform scale-[1.02] font-semibold"
+            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-gradient-to-r hover:from-red-50 hover:to-yellow-50 hover:shadow-xl transition-all duration-300 hover:transform hover:scale-[1.02]"
+            (click)="closeSidebar()">
+            <span
+              class="h-9 w-9 rounded-xl bg-gray-100 flex items-center justify-center shadow-sm group-[.router-link-active]:bg-white/20">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path [attr.d]="item.icon"/>
+              </svg>
+            </span>
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+    </aside>
+
+    @if (sidebarOpen()) {
+      <div class="fixed inset-0 z-30 bg-black/40 md:hidden" (click)="closeSidebar()"></div>
+    }
+
+    <!-- Main -->
+    <main class="flex-1 min-h-[calc(100dvh-64px)] bg-gray-50">
+      <div class="h-full">
+        <div class="h-full px-6 py-8">
+          <router-outlet/>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

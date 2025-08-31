@@ -1,0 +1,81 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
+
+    <!-- Header -->
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+      Registrar Producto
+    </h2>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="mensajeError()" class="mb-4 p-3 rounded-lg bg-red-100 text-red-700 border border-red-300">
+      {{ mensajeError() }}
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Nombre -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <input type="text" formControlName="nombre"
+               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+               placeholder="Ej: Hamburguesa clásica" />
+        <p *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched"
+           class="mt-1 text-sm text-red-600">El nombre es obligatorio</p>
+      </div>
+
+      <!-- Precio -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+        <input type="number" formControlName="precio" min="0"
+               class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
+               placeholder="Ej: 15.50" />
+        <p *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched"
+           class="mt-1 text-sm text-red-600">El precio es obligatorio</p>
+      </div>
+
+      <!-- Requiere Cocina -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">¿Requiere cocina?</label>
+        <select formControlName="requiereCocina"
+                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900">
+          <option value="" disabled selected>Seleccionar</option>
+          <option [value]="true">Sí</option>
+          <option [value]="false">No</option>
+        </select>
+        <p *ngIf="productoForm.get('requiereCocina')?.invalid && productoForm.get('requiereCocina')?.touched"
+           class="mt-1 text-sm text-red-600">Campo obligatorio</p>
+      </div>
+
+      <!-- Categoría -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+        <select formControlName="categoriaId"
+                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900">
+          <option *ngFor="let cat of categoria" [value]="cat.idCategoria">{{ cat.nombre }}</option>
+        </select>
+      </div>
+
+      <!-- Proveedor -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Proveedor</label>
+        <select formControlName="proveedorId"
+                class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-900">
+          <option *ngFor="let prov of proveedor" [value]="prov.idProveedor">{{ prov.nombre }}</option>
+        </select>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end space-x-4 pt-4">
+        <button type="button" (click)="onCancel()"
+                class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="productoForm.invalid"
+                class="px-5 py-2.5 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 shadow-md transition">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

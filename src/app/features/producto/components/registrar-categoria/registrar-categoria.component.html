@@ -1,0 +1,99 @@
+<div class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 flex items-center justify-center px-4 py-8">
+  <div class="w-full max-w-lg bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20">
+
+    <!-- Header con icono -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-2xl mb-4 shadow-lg">
+        <i class="bi bi-tags-fill text-white text-3xl"></i>
+      </div>
+      <h2 class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent mb-2">
+        Registrar Categoría
+      </h2>
+      <p class="text-gray-600">Agrega una nueva categoría de productos al menú</p>
+    </div>
+
+    <!-- Mensaje de error mejorado -->
+    <div *ngIf="mensajeError()" class="mb-6 p-4 rounded-2xl bg-red-50 text-red-700 border-l-4 border-red-400 animate-pulse">
+      <div class="flex items-center">
+        <i class="bi bi-exclamation-triangle-fill text-red-500 mr-3 text-lg"></i>
+        <span class="font-medium">{{ mensajeError() }}</span>
+      </div>
+    </div>
+
+    <!-- Formulario mejorado -->
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Campo de nombre con diseño premium -->
+      <div class="space-y-2">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          <i class="bi bi-tag-fill text-sky-500 mr-2"></i>
+          Nombre de la Categoría
+        </label>
+        <div class="relative group">
+          <input type="text" formControlName="nombre"
+                 class="w-full px-4 py-4 rounded-2xl border-2 border-gray-200 bg-gray-50/50 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-400/20 transition-all duration-300 text-gray-900 placeholder-gray-400 text-lg group-hover:border-gray-300"
+                 placeholder="Ej: Hamburguesas, Bebidas, etc..." />
+          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+            <i class="bi bi-pencil-square text-gray-400 group-focus-within:text-sky-500 transition-colors"></i>
+          </div>
+        </div>
+
+        <!-- Mensaje de validación -->
+        <div *ngIf="categoriaForm.get('nombre')?.invalid && categoriaForm.get('nombre')?.touched"
+             class="flex items-center mt-2 text-red-600 animate-pulse">
+          <i class="bi bi-x-circle-fill mr-2"></i>
+          <span class="text-sm font-medium">El nombre de la categoría es obligatorio</span>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-5 border border-orange-100">
+        <div class="flex items-start space-x-3">
+          <div class="flex-shrink-0">
+            <i class="bi bi-lightbulb-fill text-orange-500 text-lg"></i>
+          </div>
+          <div class="text-sm text-orange-700">
+            <p class="font-medium mb-2">💡 Consejos para categorías efectivas:</p>
+            <ul class="space-y-1 text-orange-600">
+              <li>• Usa nombres que los clientes entiendan fácilmente</li>
+              <li>• Agrupa productos similares (Ej: "Bebidas Frías")</li>
+              <li>• Mantén nombres cortos pero descriptivos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción mejorados -->
+      <div class="flex flex-col sm:flex-row gap-4 pt-8">
+        <button type="button" (click)="onCancel()"
+                class="flex-1 px-8 py-4 rounded-2xl border-2 border-gray-200 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 focus:ring-4 focus:ring-gray-200 transition-all duration-200 font-medium flex items-center justify-center group shadow-sm">
+          <i class="bi bi-x-lg mr-2 group-hover:scale-110 transition-transform"></i>
+          Cancelar
+        </button>
+
+        <button type="submit" [disabled]="categoriaForm.invalid"
+                class="flex-1 px-8 py-4 rounded-2xl text-white bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl focus:ring-4 focus:ring-orange-400/50 transition-all duration-200 font-semibold flex items-center justify-center group">
+          <i class="bi bi-check-lg mr-2 group-hover:scale-110 transition-transform"></i>
+          <span>Guardar Categoría</span>
+        </button>
+      </div>
+
+      <!-- Indicador de progreso sutil -->
+      <div class="text-center pt-6">
+        <div class="inline-flex items-center space-x-2 text-gray-400 text-sm">
+          <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+          <span>Configuración de menú</span>
+          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Footer con branding -->
+    <div class="text-center mt-8 pt-6 border-t border-gray-100">
+      <div class="flex items-center justify-center space-x-2 text-gray-500 text-sm">
+        <i class="bi bi-shop text-orange-500"></i>
+        <span>FastFood Pro - Sistema de Gestión</span>
+      </div>
+    </div>
+  </div>
+</div>
